@@ -9,6 +9,9 @@ import { Toaster } from "./components/ui/sonner";
 import PublicAuth from "./shared/public-auth";
 import EmployeesPage from "./employees-page/employees-page";
 import AttendancePage from "./attendance-page/attendance-page";
+import DepartmentPage from "./department-page/department-page";
+import SalaryPage from "./salary-page/salary-page";
+import EmployeeProfilePage from "./employee-profile-page/employee-profile-page";
 
 const queryClient = new QueryClient();
 function App() {
@@ -27,7 +30,16 @@ function App() {
           <Route path="/employees" element={<EmployeesPage />} />
         </Route>
         <Route element={<RequireAuth />}>
+          <Route path="/employees/:id" element={<EmployeeProfilePage />} />
+        </Route>
+        <Route element={<RequireAuth />}>
           <Route path="/attendance" element={<AttendancePage />} />
+        </Route>
+        <Route element={<RequireAuth />}>
+          <Route path="/departments" element={<DepartmentPage />} />
+        </Route>
+        <Route element={<RequireAuth />}>
+          <Route path="/salary" element={<SalaryPage />} />
         </Route>
       </Routes>
     </QueryClientProvider>

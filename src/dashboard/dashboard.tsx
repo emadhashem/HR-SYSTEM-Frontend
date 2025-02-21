@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateEmployeeModal from "./add-employee/add-employee";
 import { toast } from "sonner";
@@ -6,10 +6,36 @@ import {
   createEmployeeApi,
   CreateEmployeeRequest,
 } from "../services/employee/employee";
+import {
+  GetHolidaysResponseDto,
+  loadHolidaysFromStorage,
+} from "../services/holidays/api-holidays";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [openAddEmModal, setOpenAddEmModal] = useState(false);
+  const [holidays, setHolidays] = useState<GetHolidaysResponseDto[]>([]);
+
+  useEffect(() => {
+    fetchHolidays();
+  }, []);
+
+  const fetchHolidays = async () => {
+    const data = await loadHolidaysFromStorage().then((data) => {
+      return data
+        .filter((holiday: GetHolidaysResponseDto) => {
+          const holidayDate = new Date(holiday.date);
+          const currentDate = new Date();
+          return holidayDate >= currentDate;
+        })
+        .sort((a: GetHolidaysResponseDto, b: GetHolidaysResponseDto) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA.getTime() - dateB.getTime();
+        });
+    });
+    setHolidays(data);
+  };
 
   const handleOnAddEmAction = () => {
     setOpenAddEmModal(true);
@@ -82,7 +108,7 @@ const Dashboard: React.FC = () => {
                 onClick={() => navigate("/attendance")}
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-300"
               >
-                Record Attendance
+                All Attendance
               </button>
             </div>
           </div>
@@ -92,15 +118,11 @@ const Dashboard: React.FC = () => {
             </h2>
             <div className="text-gray-600">
               <ul>
-                <li>
-                  <strong>New Year's Day</strong> - January 1, 2025
-                </li>
-                <li>
-                  <strong>Company Retreat</strong> - March 15-17, 2024
-                </li>
-                <li>
-                  <strong>Independence Day</strong> - July 4, 2024
-                </li>
+                {holidays.slice(0, 3).map((item) => (
+                  <li key={item.name}>
+                    <strong>{item.name}</strong> - {item.date}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

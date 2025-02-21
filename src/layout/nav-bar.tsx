@@ -31,6 +31,14 @@ const Navbar: React.FC = () => {
       href: "/attendance",
       label: "Attendance",
     },
+    {
+      href: "/departments",
+      label: "Departments",
+    },
+    {
+      href: "/salary",
+      label: "Salary Management",
+    },
   ];
 
   const logout = () => {
@@ -53,7 +61,7 @@ const Navbar: React.FC = () => {
                 <Link
                   key={index}
                   to={page.href}
-                  className="text-gray-300 hover:text-white text-2xl"
+                  className="text-gray-300 hover:text-white text-xl"
                 >
                   {page.label}
                 </Link>

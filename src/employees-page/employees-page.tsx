@@ -35,6 +35,7 @@ import Pagination from "../components/my-ui/pagination";
 
 import UpdateEmployeeModal from "../dashboard/update-employee/update-employee";
 import RecordAttendance from "./record-attance/record-attance";
+import { Link } from "react-router-dom";
 
 const EmployeesPage: React.FC = () => {
   const [employeeToDelete, setEmployeeToDelete] = useState<number | null>(null);
@@ -121,9 +122,10 @@ const EmployeesPage: React.FC = () => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Group</TableHead>
+              <TableHead className="text-center">Name</TableHead>
+              <TableHead className="text-center">Email</TableHead>
+              <TableHead className="text-center">Group</TableHead>
+              <TableHead className="text-center">Department</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -139,15 +141,24 @@ const EmployeesPage: React.FC = () => {
               employees.map((employee) => (
                 <TableRow key={employee.id}>
                   <TableCell className="font-medium">{employee.id}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
                     <RecordAttendance
                       emEmail={employee.email}
                       emId={employee.id}
                       emName={employee.name}
                     />
                   </TableCell>
-                  <TableCell>{employee.email}</TableCell>
-                  <TableCell>{employee.groupType}</TableCell>
+                  <TableCell className="text-center">
+                    <Link to={`/employees/${employee.id}`}>
+                      {employee.email}
+                    </Link>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {employee.groupType}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {employee.department.name ?? "-----"}
+                  </TableCell>
                   <TableCell className="text-center space-x-3 items-center justify-center">
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
