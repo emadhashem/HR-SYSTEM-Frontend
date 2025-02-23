@@ -27,5 +27,5 @@ A user-friendly frontend application for managing Human Resources within an orga
 
     ## Login For first time :
 
-      <p>email : ivoiceup@test.com</p>
+      <p>email : emad@test.com</p>
       <p>password : 12345678</p>
